@@ -1,0 +1,2 @@
+- `bundle install` dependencies
+- `rspec` executes questions as specs
