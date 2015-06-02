@@ -1,0 +1,41 @@
+Jasmine
+==============================
+
+- BDD for JS
+- Suites begin with call to 'describe' global
+	- String description
+	- function implements the suite
+- Specs begin with call to 'it' global
+	- contains 1 or more expectations: true or false
+	- spec with all true expectations passes
+- Expectations begin with 'expect', chained with a Matcher function which takes the expected value. Chaining multiple matchers together together.
+
+	`describe("A suite is just a function", function() {
+    var a;
+	  
+    it("and so is a spec", function() {
+      a = true;
+	  
+      expect(a).toBe(true);
+    });
+  });`
+- Setup/Teardown
+	- beforeEach
+	- afterEach
+		- around each spec
+	- beforeAll
+	- afterAll
+	  - around each suite
+  - These fn's modify variables within the scope of the describe block
+	- can use the 'this' namespace to share variables between specs
+- Nesting describes
+	- able to share context with parents
+- disable suites: xdescribe
+- disable spec: xit
+- pending: calling pending('description') within a spec body will mark the entire spec as pending
+- Spies
+	- Test doubles
+	- Stubs any function and tracks calls to its arguments
+	- allows specing function evaluation
+- jasmine.any
+	- takes a constructor or class name as a value and returns true if the constructor matches the constructor of the value
