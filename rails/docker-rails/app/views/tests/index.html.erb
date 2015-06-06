@@ -1,0 +1,18 @@
+<h1>Listing Tests</h1>
+
+<table>
+  <thead>
+    <th>id</th>
+    <th>title</th>
+    <th>content</th>
+  </thead>
+  <tbody>
+    <% @tests.each do |test| %>
+    <tr>
+      <td><%= test.id %></td>
+      <td><%= test.title %></td>
+      <td><%= test.content %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

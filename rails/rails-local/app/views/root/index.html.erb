@@ -1,0 +1,22 @@
+<h1>API resources</h1>
+
+<table>
+  <thead>
+    <th>Name</th>
+    <th>Path</th>
+    <th>Controller</th>
+    <th>Model</th>
+    <th>#</th>
+  </thead>
+  <tbody>
+    <% @resources.each {|resource| %>
+    <tr>
+      <td><a href="<%= resource[:path] %>"><%= resource[:name] %></a></td>
+      <td><%= resource[:path] %></td>
+      <td><%= resource[:controller] %></td>
+      <td><%= resource[:model] %></td>
+      <td><%= resource[:count] %></td>
+    </tr>
+    <% } %>
+  </tbody>
+</table>
