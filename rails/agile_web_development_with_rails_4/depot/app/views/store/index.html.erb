@@ -1,0 +1,35 @@
+<% if notice %>
+<p id="notice"><%= notice %></p>
+<% end %>
+
+<h1>Your Pragmatic Catalogue</h1>
+
+<!--
+
+    implementing russian doll cacheing
+    cache blocks need a cache key and the components
+    used to invalidate stale cache results
+
+-->
+
+<h3>Store controller accessed <%= session[:index_count] %> <%= session[:index_count] == 1 ? "time" : "times" %></h3>
+
+<% if session[:index_count] > 5 %>
+<h4>Session counter is greater than 5</h4>
+<% end %>
+
+<% cache ['store', Product.latest] do %>
+  <% @products.each do |product| %>
+    <% cache ['item', product] do %>
+    <div class="entry">
+      <%= image_tag(product.image_url) %>
+      <h3><%= product.title %></h3>
+      <%= sanitize(product.description) %>
+      <div class="price_line">
+        <span class="price"><%= number_to_currency(product.price) %></span>
+        <%= button_to 'Add to Cart', line_items_path(product_id: product), remote: true %>
+      </div>
+    </div>
+    <% end %>
+  <% end %>
+<% end %>
