@@ -1,0 +1,143 @@
+3.8.1. Exercise 3-1
+Retrieve the employee ID, first name, and last name for all bank employees. Sort by last name and then by first name.
+
+MariaDB [basic_company]> SELECT e.emp_id,e.fname,e.lname FROM employee e ORDER BY e.lname,e.fname;
++--------+----------+-----------+
+| emp_id | fname    | lname     |
++--------+----------+-----------+
+|      2 | Susan    | Barker    |
+|     13 | John     | Blake     |
+|      6 | Helen    | Fleming   |
+|     17 | Beth     | Fowler    |
+|      5 | John     | Gooding   |
+|      9 | Jane     | Grossman  |
+|      4 | Susan    | Hawthorne |
+|     12 | Samantha | Jameson   |
+|     16 | Theresa  | Markham   |
+|     14 | Cindy    | Mason     |
+|      8 | Sarah    | Parker    |
+|     15 | Frank    | Portman   |
+|     10 | Paula    | Roberts   |
+|      1 | Michael  | Smith     |
+|      7 | Chris    | Tucker    |
+|     18 | Rick     | Tulman    |
+|      3 | Robert   | Tyler     |
+|     11 | Thomas   | Ziegler   |
++--------+----------+-----------+
+18 rows in set (0.00 sec
+
+3.8.2. Exercise 3-2
+Retrieve the account ID, customer ID, and available balance for all accounts whose status equals 'ACTIVE' and whose available balance is greater than $2,500.
+
+MariaDB [basic_company]> SELECT a.account_id,a.cust_id,SUM(a.avail_balance
+) from account a WHERE a.status IN ('ACTIVE') GROUP BY a.cust_id HAVING su
+m(a.avail_balance) > 2500.00;
++------------+---------+----------------------+
+| account_id | cust_id | SUM(a.avail_balance) |
++------------+---------+----------------------+
+|          1 |       1 |              4557.75 |
+|          7 |       3 |              3270.25 |
+|         10 |       4 |              6788.98 |
+|         14 |       6 |             10122.37 |
+|         17 |       7 |              5000.00 |
+|         18 |       8 |              3875.18 |
+|         21 |       9 |             10971.22 |
+|         24 |      10 |             23575.12 |
+|         27 |      11 |              9345.55 |
+|         28 |      12 |             38552.05 |
+|         29 |      13 |             50000.00 |
++------------+---------+----------------------+
+11 rows in set (0.00 sec)
+
+3.8.3. Exercise 3-3
+Write a query against the account table that returns the IDs of the employees who opened the accounts (use the account.open_emp_id column). Include a single row for each distinct employee.
+
+MariaDB [basic_company]> SELECT DISTINCT(a.open_emp_id),e.lname,e.fname from employee e INNER JOIN account a on e.emp_id = a.open_emp_id;
++-------------+---------+---------+
+| open_emp_id | lname   | fname   |
++-------------+---------+---------+
+|           1 | Smith   | Michael |
+|          10 | Roberts | Paula   |
+|          13 | Blake   | John    |
+|          16 | Markham | Theresa |
++-------------+---------+---------+
+4 rows in set (0.00 sec)
+
+5.6.1. Exercise 5-1
+Fill in the blanks (denoted by <#>) for the following query to obtain the results that follow:
+mysql> SELECT e.emp_id, e.fname, e.lname, b.name
+       FROM employee e INNER JOIN <1> b
+       ON e.assigned_branch_id = b.<2>;
+
+MariaDB [basic_company]> SELECT e.emp_id, e.fname, e.lname, b.name
+    -> FROM employee e INNER JOIN branch b
+        -> ON e.assigned_branch_id = b.branch_id;
+        +--------+----------+-----------+---------------+
+        | emp_id | fname    | lname     | name          |
+        +--------+----------+-----------+---------------+
+        |      1 | Michael  | Smith     | Headquarters  |
+        |      2 | Susan    | Barker    | Headquarters  |
+        |      3 | Robert   | Tyler     | Headquarters  |
+        |      4 | Susan    | Hawthorne | Headquarters  |
+        |      5 | John     | Gooding   | Headquarters  |
+        |      6 | Helen    | Fleming   | Headquarters  |
+        |      7 | Chris    | Tucker    | Headquarters  |
+        |      8 | Sarah    | Parker    | Headquarters  |
+        |      9 | Jane     | Grossman  | Headquarters  |
+        |     10 | Paula    | Roberts   | Woburn Branch |
+        |     11 | Thomas   | Ziegler   | Woburn Branch |
+        |     12 | Samantha | Jameson   | Woburn Branch |
+        |     13 | John     | Blake     | Quincy Branch |
+        |     14 | Cindy    | Mason     | Quincy Branch |
+        |     15 | Frank    | Portman   | Quincy Branch |
+        |     16 | Theresa  | Markham   | So. NH Branch |
+        |     17 | Beth     | Fowler    | So. NH Branch |
+        |     18 | Rick     | Tulman    | So. NH Branch |
+        +--------+----------+-----------+---------------+
+
+18 rows in set (0.03 sec)
+
+5.6.2. Exercise 5-2
+Write a query that returns the account ID for each nonbusiness customer (customer.cust_type_cd = 'I') with the customer's federal ID (customer.fed_id) and the name of the product on which the account is based (product.name).
+
+MariaDB [basic_company]> SELECT c.fed_id, a.cust_id, p.name from customer
+c INNER JOIN account a on c.cust_id = a.cust_id INNER JOIN product p on a.
+product_cd = p.product_cd WHERE c.cust_type_cd = 'I';
++-------------+---------+------------------------+
+| fed_id      | cust_id | name                   |
++-------------+---------+------------------------+
+| 111-11-1111 |       1 | certificate of deposit |
+| 666-66-6666 |       6 | certificate of deposit |
+| 777-77-7777 |       7 | certificate of deposit |
+| 999-99-9999 |       9 | certificate of deposit |
+| 111-11-1111 |       1 | checking account       |
+| 222-22-2222 |       2 | checking account       |
+| 333-33-3333 |       3 | checking account       |
+| 444-44-4444 |       4 | checking account       |
+| 555-55-5555 |       5 | checking account       |
+| 666-66-6666 |       6 | checking account       |
+| 888-88-8888 |       8 | checking account       |
+| 999-99-9999 |       9 | checking account       |
+| 333-33-3333 |       3 | money market account   |
+| 444-44-4444 |       4 | money market account   |
+| 999-99-9999 |       9 | money market account   |
+| 111-11-1111 |       1 | savings account        |
+| 222-22-2222 |       2 | savings account        |
+| 444-44-4444 |       4 | savings account        |
+| 888-88-8888 |       8 | savings account        |
++-------------+---------+------------------------+
+19 rows in set (0.00 sec
+
+5.6.3. Exercise 5-3
+Construct a query that finds all employees whose supervisor is assigned to a different department. Retrieve the employees' ID, first name, and last name.
+
+MariaDB [basic_company]> SELECT e1.emp_id, CONCAT(e1.fname,' ',e1.lname) name FROM employee e1 INNER JOIN employee e2 on e1.superior_emp_id = e2.emp
+_id WHERE e1.dept_id != e2.dept_id;
++--------+-----------------+
+| emp_id | name            |
++--------+-----------------+
+|      4 | Susan Hawthorne |
+|      5 | John Gooding    |
++--------+-----------------+
+2 rows in set (0.00 sec)
+
